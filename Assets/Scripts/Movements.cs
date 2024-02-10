@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,9 @@ public class Movements : MonoBehaviour
 {
     public float speed = 5.0f;
     public float jumpForce = 7.0f;
+
+    public int treasureCount = 0;
+    public TextMeshProUGUI treasureCounterText;
     public Animator animator;
    
     public LayerMask groundLayer;
@@ -23,6 +27,7 @@ public class Movements : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        UpdateTreasureCounter();
     }
 
     void Update()
@@ -50,6 +55,12 @@ public class Movements : MonoBehaviour
 
         // Set animation parameters
         animator.SetBool("IsWalking", Mathf.Abs(moveHorizontal) > 0);
+        if (moveHorizontal > 0) { 
+        
+            animator.SetBool("IsIdle", false);
+
+        }
+
         if( moveHorizontal == 0){ 
         
             animator.SetBool("IsIdle", true);
@@ -90,5 +101,16 @@ public class Movements : MonoBehaviour
     private void Die()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void CollectTreasure()
+    {
+        treasureCount++; // Increase the count by 1
+        UpdateTreasureCounter();
+    }
+
+    void UpdateTreasureCounter()
+    {
+        treasureCounterText.text = "Treasure: " + treasureCount; // Update the TextMeshPro text
     }
 }
