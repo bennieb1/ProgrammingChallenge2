@@ -18,7 +18,7 @@ public class Movements : MonoBehaviour
     public int treasureCount = 0;
     public TextMeshProUGUI treasureCounterText;
     public Animator animator;
-
+    public bool played = false;
     public LayerMask groundLayer;
     public float groundCheckRadius = 0.2f;
 
@@ -98,6 +98,15 @@ public class Movements : MonoBehaviour
         if (other.gameObject.CompareTag("Lava") || other.gameObject.CompareTag("DeathZone"))
         {
             StartCoroutine(DelayedDie(.1f)); // Call the coroutine with a 2-second delay
+        }else if (other.gameObject.CompareTag("EndZone"))
+        {
+            if (!played)
+            {
+                played = true;
+                StartCoroutine(DelayedDie(1000f));
+            }
+                
+           
         }
     }
 
