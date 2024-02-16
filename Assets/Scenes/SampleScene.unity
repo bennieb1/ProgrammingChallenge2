@@ -2322,6 +2322,7 @@ MonoBehaviour:
   treasureCount: 0
   treasureCounterText: {fileID: 1511230551}
   animator: {fileID: 501806801}
+  played: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -9464,7 +9465,7 @@ GameObject:
   - component: {fileID: 1907837009}
   m_Layer: 0
   m_Name: hole2
-  m_TagString: Lava
+  m_TagString: EndZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
