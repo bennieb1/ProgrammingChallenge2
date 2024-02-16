@@ -13,10 +13,12 @@ public class Movements : MonoBehaviour
     public float speed = 5.0f;
     public float jumpForce = 7.0f;
 
+
+
     public int treasureCount = 0;
     public TextMeshProUGUI treasureCounterText;
     public Animator animator;
-   
+
     public LayerMask groundLayer;
     public float groundCheckRadius = 0.2f;
 
@@ -32,8 +34,6 @@ public class Movements : MonoBehaviour
 
     void Update()
     {
-        
-
         MovePlayer();
         if (Input.GetButtonDown("Jump") && !isAttacking)
         {
@@ -41,11 +41,16 @@ public class Movements : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire1"))
         {
+       
             Attack();
+            
+            
         }
 
         // Update the IsJumping animation parameter
         animator.GetBool("IsJumping");
+
+        
     }
 
     void MovePlayer()
@@ -55,16 +60,15 @@ public class Movements : MonoBehaviour
 
         // Set animation parameters
         animator.SetBool("IsWalking", Mathf.Abs(moveHorizontal) > 0);
-        if (moveHorizontal > 0) { 
-        
+        if (moveHorizontal > 0)
+        {
             animator.SetBool("IsIdle", false);
-
+            
         }
 
-        if( moveHorizontal == 0){ 
-        
+        if (moveHorizontal == 0)
+        {
             animator.SetBool("IsIdle", true);
-
         }
     }
 
@@ -72,13 +76,20 @@ public class Movements : MonoBehaviour
     {
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         animator.SetBool("IsJumping", true);
- 
+
+        
+        
     }
 
     void Attack()
     {
-        isAttacking = true;
-        animator.SetBool("IsAttacking", true);
+        
+        //animator.SetBool("IsAttacking", true); // Set the trigger to play the attack animation
+
+
+            animator.SetTrigger("Attack");
+
+
         // Reset 'isAttacking' in an animation event at the end of the attack animation
     }
 
@@ -86,7 +97,7 @@ public class Movements : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Lava") || other.gameObject.CompareTag("DeathZone"))
         {
-            Die();
+            StartCoroutine(DelayedDie(.1f)); // Call the coroutine with a 2-second delay
         }
     }
 
@@ -98,9 +109,12 @@ public class Movements : MonoBehaviour
         }
     }
 
-    private void Die()
+   
+
+    IEnumerator DelayedDie(float delay)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        yield return new WaitForSeconds(delay); // Wait for 'delay' seconds
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the scene
     }
 
     public void CollectTreasure()
